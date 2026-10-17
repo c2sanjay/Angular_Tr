@@ -1,0 +1,176 @@
+<app-module-layout>
+  <app-sync-mode [isSyncInProgress]="isSyncInProgress" />
+  <div style="width: calc(100vw - 76px); position: relative; left: 60px">
+    <div
+      class="d-flex flex-wrap justify-content-between align-items-center px-4 header-bg text-black main-heading"
+      style="margin-top: -3px"
+    >
+      <kendo-textbox
+        [readonly]="true"
+        [value]="yardNameUrl ? yardNameUrl : 'Loading...'"
+        class="k-custom-width k-rounded-md k-input-outline k-picker-lg"
+        style="background-color: white !important"
+      ></kendo-textbox>
+      <button
+        kendoButton
+        type="button"
+        themeColor="primary"
+        fillMode="clear"
+        (click)="showCancel()"
+        class="h-40px"
+      >
+        <app-fa-arrow-left-icon />BACK
+      </button>
+    </div>
+    <div class="p-4">
+      <div
+        class="d-flex justify-content-between align-items-center k-rounded-lg k-custom-rounded-top"
+      >
+        <h3 class="h5 mb-0" *ngIf="formTitle; else loadingFormTitle">
+          {{ formTitle }}
+        </h3>
+        <ng-template #loadingFormTitle>
+          <h3 class="h5 mb-0">Loading...</h3>
+        </ng-template>
+        <div class="d-flex align-items-center gap-3 text-nowrap">
+          <ng-container *ngIf="updatedFormOn">
+            <small class="text-secondary">
+              Form Updated On: {{ updatedFormOn || '' | ipTimezone }}
+            </small>
+            <span class="line"></span>
+          </ng-container>
+          <button
+            kendoButton
+            fillMode="outline"
+            themeColor="primary"
+            class="k-rounded-md px-4 h-40px"
+            (click)="refreshComponent()"
+          >
+            CLEAR
+          </button>
+          <button
+            kendoButton
+            themeColor="primary"
+            class="k-rounded-md px-4 h-40px"
+            (click)="downloadPDF()"
+            [disabled]="!isDownloadEnabled"
+          >
+            DOWNLOAD PDF
+          </button>
+        </div>
+      </div>
+      <div class="box-inner">
+        <app-loading-spinner [isLoading]="isLoading" [isRelative]="false" />
+        <div class="container-fluid">
+          <div class="row justify-content-center">
+            <div class="col-sm-12">
+              <main class="main">
+                <div id="builder">
+                  <div #formContainer class="mt-3 not-filled-form">
+                    <formio
+                      #myForm
+                      [src]="formSrc"
+                      [options]="formOptions"
+                      [submission]="submissionData"
+                      (formLoad)="onFormLoad($event)"
+                      (change)="onFormChange($event)"
+                    >
+                    </formio>
+                    <div
+                      class="d-flex justify-content-center my-3 gap-3"
+                      *ngIf="tabNavigationService.isTabNavigationVisible"
+                    >
+                      <button
+                        kendoButton
+                        type="button"
+                        [disabled]="tabNavigationService.currentTabIndex === 0"
+                        themeColor="primary"
+                        class="k-rounded-md px-4 h-40px"
+                        (click)="onPreviousTab()"
+                      >
+                        <app-fa-arrow-left-icon />PREV
+                      </button>
+                      <button
+                        kendoButton
+                        type="button"
+                        [disabled]="
+                          tabNavigationService.currentTabIndex ===
+                          tabNavigationService.totalTabs - 1
+                        "
+                        themeColor="primary"
+                        class="k-rounded-md px-4 h-40px"
+                        (click)="onNextTab()"
+                      >
+                        NEXT<app-fa-arrow-right-icon />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </main>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="d-flex justify-content-between align-items-center gap-3 k-rounded-lg k-custom-rounded-bottom"
+        [class.pe-none]="isSyncInProgress"
+        [class.opacity-50]="isSyncInProgress"
+      >
+        <button
+          kendoButton
+          type="button"
+          fillMode="outline"
+          themeColor="primary"
+          class="k-rounded-md px-4 h-40px"
+          (click)="showCancel()"
+        >
+          CANCEL
+        </button>
+        <div class="d-flex gap-3">
+          <button
+            kendoButton
+            type="button"
+            fillMode="outline"
+            themeColor="primary"
+            class="k-rounded-md px-4 h-40px"
+            (click)="saveAsDraft()"
+          >
+            SAVE AS DRAFT
+          </button>
+          <button
+            kendoButton
+            type="submit"
+            themeColor="primary"
+            class="k-rounded-md px-4 h-40px"
+            (click)="validateForm()"
+          >
+            SUBMIT
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-module-layout>
+
+<kendo-confirm-dialog
+  *ngIf="dialogVisible"
+  [title]="'Are you sure?'"
+  [type]="'warning'"
+  [message]="
+    'This form has already been marked as submitted. Would you like to
+          override the last submission?'
+  "
+  (closeDialog)="handleDialogClose($event)"
+/>
+
+<kendo-cancel-modification-dialog
+  *ngIf="formModifiedDialogVisible"
+  [type]="'warning'"
+  [message]="'You have unsaved changes. Do you want to leave without saving?'"
+  (closeDialog)="handleModifiedDialogClose($event)"
+/>
+
+<app-kendo-loading-dialog
+  [message]="'GENERATING PDF'"
+  *ngIf="isPdfDownloading"
+/>

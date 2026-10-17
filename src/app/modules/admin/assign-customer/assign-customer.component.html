@@ -1,0 +1,169 @@
+<app-module-layout>
+  <app-sync-mode [isSyncInProgress]="isSyncInProgress" />
+  <div style="width: calc(100vw - 60px); position: relative; left: 60px">
+    <div
+      class="d-flex flex-wrap justify-content-between align-items-center px-4 header-bg text-black main-heading"
+      style="margin-top: -3px"
+    >
+      <kendo-textbox
+        *ngIf="isFormsLoading"
+        [readonly]="true"
+        [value]="'Loading...'"
+        class="k-custom-width k-rounded-md k-input-outline k-picker-lg"
+        style="background-color: white !important"
+      ></kendo-textbox>
+      <kendo-dropdownlist
+        *ngIf="!isFormsLoading"
+        [data]="forms"
+        [(ngModel)]="selectedFormDetails"
+        [textField]="'title'"
+        [valueField]="'title'"
+        (valueChange)="onDropdownChange($event)"
+        class="k-custom-width k-rounded-md k-input-outline k-input-lg"
+      >
+      </kendo-dropdownlist>
+      <button
+        kendoButton
+        type="button"
+        themeColor="primary"
+        fillMode="clear"
+        (click)="goBack()"
+        class="h-40px"
+      >
+        <app-fa-arrow-left-icon />BACK
+      </button>
+    </div>
+    <div class="container-fluid p-4">
+      <div class="k-rounded-lg k-custom-rounded-top">
+        <p
+          class="m-0 fw-medium"
+          style="font-size: 20px; max-width: max-content"
+        >
+          Assign Customer
+        </p>
+      </div>
+      <div class="border" *ngIf="isLoading">
+        <app-loading-spinner [isLoading]="isLoading" [isRelative]="true" />
+      </div>
+      <div
+        *ngIf="!isLoading"
+        style="height: calc(100vh - 234px) !important; overflow: hidden"
+      >
+        <kendo-grid
+          scrollable="scrollable"
+          style="max-height: 100%"
+          [data]="gridView"
+          [pageSize]="pageSize"
+          [skip]="gridState.skip"
+          [pageable]="true"
+          [sortable]="true"
+          [sort]="gridState.sort"
+          filterable="menu"
+          [filter]="gridState.filter"
+          (dataStateChange)="onDataStateChange($event)"
+          ><kendo-grid-column field="name" title="Customer Name" [width]="250"
+            ><ng-template kendoGridCellTemplate let-customer
+              ><div class="d-flex justify-content-between">
+                <span>{{ customer.name }}</span>
+                <a
+                  class="cursor-pointer anchor"
+                  style="color: #346cab"
+                  href="javascript:void(0)"
+                  (click)="
+                    formAssign(
+                      customer.id,
+                      customer.name,
+                      customer.primaryContactName,
+                      customer.phoneNumber,
+                      customer.primaryContactEmail
+                    )
+                  "
+                  >ASSIGN</a
+                >
+              </div>
+            </ng-template>
+          </kendo-grid-column>
+        </kendo-grid>
+      </div>
+    </div>
+  </div>
+</app-module-layout>
+
+<kendo-dialog
+  *ngIf="assignDialogVisible"
+  title="Assign Customer"
+  (close)="onCancel()"
+  [minWidth]="280"
+  [width]="580"
+  [minHeight]="350"
+>
+  <div class="d-flex flex-column gap-3">
+    <kendo-textbox
+      [readonly]="true"
+      [value]="selectedFormDetails.title"
+      class="w-100 k-rounded-md k-input-outline k-picker-lg"
+      style="background-color: white !important"
+    ></kendo-textbox>
+    <kendo-textbox
+      [readonly]="true"
+      [value]="customerName"
+      class="w-100 k-rounded-md k-input-outline k-picker-lg"
+      style="background-color: white !important"
+    ></kendo-textbox>
+    <p class="fw-medium mb-0">Please select the yard(s) to assign form.</p>
+    <kendo-textbox
+      *ngIf="isYardLoading"
+      [readonly]="true"
+      [value]="'Loading...'"
+      class="w-100 k-rounded-md k-input-outline k-picker-lg"
+      style="background-color: white !important"
+    ></kendo-textbox>
+    <kendo-multiselect
+      #multiselect
+      *ngIf="!isYardLoading"
+      [(ngModel)]="yardsToAssign"
+      class="w-100 k-rounded-md k-input-outline k-picker-lg"
+      [data]="yards"
+      [textField]="'Name'"
+      [valueField]="'Id'"
+      [valuePrimitive]="true"
+    >
+      <ng-template kendoMultiSelectHeaderTemplate *ngIf="yards.length > 0">
+        <button
+          class="border-0 bg-transparent"
+          style="
+            padding: 8px;
+            text-align: left;
+            font-size: 14px;
+            color: #3d3d3d;
+          "
+          (click)="toggleSelectAll()"
+        >
+          SELECT ALL
+        </button>
+      </ng-template>
+    </kendo-multiselect>
+  </div>
+  <kendo-dialog-actions [layout]="'end'" class="d-flex gap-3 p-3">
+    <button
+      kendoButton
+      (click)="onCancel()"
+      themeColor="primary"
+      fillMode="clear"
+      class="px-3"
+      style="height: 34px"
+    >
+      CANCEL
+    </button>
+    <button
+      kendoButton
+      (click)="onConfirm()"
+      themeColor="primary"
+      class="px-5"
+      style="height: 34px"
+      [disabled]="yardsToAssign.length === 0"
+    >
+      ASSIGN
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>

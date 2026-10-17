@@ -1,0 +1,166 @@
+<app-module-layout>
+  <app-sync-mode [isSyncInProgress]="isSyncInProgress" />
+  <div style="width: calc(100vw - 60px); position: relative; left: 60px">
+    <div
+      class="d-flex flex-wrap justify-content-between align-items-center px-4 header-bg text-black main-heading"
+      style="margin-top: -3px"
+    >
+      <div class="d-flex align-items-center gap-3">
+        <kendo-textbox
+          [readonly]="true"
+          [value]="currentCustomerDetails"
+          class="k-custom-width k-rounded-md k-input-outline k-input-lg"
+        ></kendo-textbox>
+        <kendo-textbox
+          *ngIf="isYardsLoading"
+          [readonly]="true"
+          [value]="'Loading...'"
+          class="k-custom-width k-rounded-md k-input-outline k-input-lg"
+          style="background-color: white !important"
+        ></kendo-textbox>
+        <kendo-dropdownlist
+          *ngIf="!isYardsLoading"
+          [data]="yards"
+          [defaultItem]="defaultDropDownValue"
+          placeholder="Select Yard"
+          [textField]="'Name'"
+          [valueField]="'Id'"
+          [valuePrimitive]="false"
+          [itemDisabled]="itemDisabled"
+          (valueChange)="onDropdownChange($event)"
+          class="k-custom-width k-rounded-md k-input-outline k-input-lg"
+        >
+        </kendo-dropdownlist>
+      </div>
+      <button
+        kendoButton
+        type="button"
+        themeColor="primary"
+        fillMode="clear"
+        (click)="goBack()"
+        class="h-40px"
+      >
+        <app-fa-arrow-left-icon />BACK
+      </button>
+    </div>
+    <div class="container-fluid p-4">
+      <div
+        class="d-flex justify-content-between align-items-center k-rounded-lg k-custom-rounded-top"
+      >
+        <p
+          class="m-0 fw-medium"
+          style="font-size: 20px; max-width: max-content"
+        >
+          Assign Form
+        </p>
+        <div class="d-flex align-items-center gap-3">
+          <button
+            kendoButton
+            themeColor="primary"
+            class="k-rounded-md px-4 h-40px"
+            (click)="createForm()"
+          >
+            CREATE FORM
+          </button>
+        </div>
+      </div>
+      <div class="border" *ngIf="isLoading; else showFormListing">
+        <app-loading-spinner [isLoading]="isLoading" [isRelative]="true" />
+      </div>
+      <ng-template #showFormListing>
+        <div
+          class="d-flex align-items-center justify-content-between px-4 py-2 bg-body-secondary gap-3"
+        >
+          <div class="row gap-3">
+            <p
+              class="text-black mb-0"
+              style="font-size: 16px; width: max-content"
+            >
+              Selected
+              {{ selectedFormList.length || 0 }}
+            </p>
+            <p
+              class="text-black mb-0"
+              style="font-size: 16px; width: max-content"
+            >
+              Total {{ forms.length || 0 }}
+            </p>
+          </div>
+        </div>
+        <div
+          class="form-list-grid"
+          style="height: calc(100vh - 344px) !important; overflow: hidden"
+        >
+          <kendo-grid
+            scrollable="scrollable"
+            style="max-height: 100%"
+            [data]="gridView"
+            [pageSize]="pageSize"
+            [skip]="gridState.skip"
+            [pageable]="true"
+            [sortable]="true"
+            [sort]="gridState.sort"
+            filterable="menu"
+            [filter]="gridState.filter"
+            (dataStateChange)="onDataStateChange($event)"
+          >
+            <kendo-grid-column [width]="8" [sortable]="false">
+              <ng-template kendoGridHeaderTemplate>
+                <div class="d-flex justify-content-center w-100">
+                  <input
+                    #masterCheckbox
+                    type="checkbox"
+                    class="form-check-input"
+                    [checked]="isAllSelected()"
+                    [indeterminate]="isIndeterminate()"
+                    (change)="toggleSelectAll()"
+                    style="margin: 4px"
+                  />
+                </div>
+              </ng-template>
+              <ng-template kendoGridCellTemplate let-form>
+                <div
+                  class="d-flex justify-content-center"
+                  *ngIf="form?.type && form.type !== 'resource'"
+                >
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    [checked]="selectedFormsBg.has(form.name)"
+                    (change)="onCheckBoxChange($event, form, form.customerID)"
+                  />
+                </div>
+              </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column field="title" title="Form Name" [width]="150">
+            </kendo-grid-column>
+          </kendo-grid>
+        </div>
+      </ng-template>
+      <div
+        class="d-flex justify-content-between align-items-center gap-3 k-rounded-lg k-custom-rounded-bottom"
+      >
+        <button
+          kendoButton
+          type="button"
+          fillMode="outline"
+          themeColor="primary"
+          class="k-rounded-md px-4 h-40px"
+          (click)="goBack()"
+        >
+          CANCEL
+        </button>
+        <button
+          kendoButton
+          type="submit"
+          themeColor="primary"
+          class="k-rounded-md px-4 h-40px"
+          (click)="onSubmit()"
+          [disabled]="isLoading"
+        >
+          ASSIGN FORM
+        </button>
+      </div>
+    </div>
+  </div>
+</app-module-layout>

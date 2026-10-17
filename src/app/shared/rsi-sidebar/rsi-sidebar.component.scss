@@ -1,0 +1,98 @@
+@import '../../../variables';
+
+.menu-backdrop {
+  padding-bottom: 0;
+  z-index: 1;
+  color: rgba(0, 0, 0, 0.87);
+  background-color: #fafafa;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+  display: block;
+  overflow: hidden;
+  .menu-list a.nav-link {
+    padding-left: 1.75rem !important;
+  }
+  .mat-drawer-backdrop {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    display: block;
+    z-index: 3;
+    visibility: hidden;
+    &.show {
+      visibility: visible;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+  }
+  .mat-drawer-transition .mat-drawer-backdrop {
+    transition-duration: 400ms;
+    transition-timing-function: cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-property: background-color, visibility;
+  }
+}
+
+.menu-list-container {
+  position: fixed;
+  top: 54px;
+  z-index: 997;
+  width: 300px;
+  height: calc(100vh - 54px);
+  background-color: $LEFT-NAV-BG;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 40px 16px 0px;
+  transform: translateX(-260px);
+  transition:
+    visibility 0.3s,
+    transform 0.3s,
+    overlay 0.3s allow-discrete,
+    display 0.3s ease-in-out allow-discrete;
+  visibility: hidden;
+  &.show {
+    transform: translateX(0px);
+    visibility: visible;
+  }
+}
+.menu-list {
+  background: rgb(248, 248, 248);
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 36px;
+  background-color: $LEFT-NAV-BG;
+  color: white;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  .nav-item {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    width: 100%;
+    &.linkActive {
+      background-color: $Lochmara !important;
+    }
+    &.expanded:hover {
+      cursor: pointer;
+      background-color: $LEFT-NAV-BG-HOVER;
+      a.nav-link span {
+        color: white;
+        text-decoration: underline;
+        text-decoration-color: $Lochmara;
+      }
+    }
+    a.nav-link {
+      width: 100%;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0 16px;
+      color: white;
+      font-size: 14px;
+      text-decoration: none;
+      span {
+        color: white;
+        text-decoration: none;
+      }
+    }
+  }
+}

@@ -1,0 +1,197 @@
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 25px;
+    display: inline-block;
+}
+
+.toggle-input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 25px;
+    transition: 0.4s;
+}
+
+.slider:before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 4px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+.toggle-input:checked+.slider {
+    background-color: #4CAF50;
+}
+
+.toggle-input:checked+.slider:before {
+    transform: translateX(24px);
+}
+
+/*  Ensure Label Looks Proper */
+.toggle-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+
+/* ############ Custom checkbox starts here ################## */
+/* Hide the default checkbox but keep it accessible */
+.checkbox-custom .form-check-input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+
+/* Custom checkbox container */
+.form-check-input {
+    border: 2px solid #0d6efd !important;
+}
+
+/* Label for styling */
+.checkbox-custom .form-check-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    gap: 8px;
+    margin-bottom: 0.8rem;
+}
+
+/* Custom checkbox */
+.checkbox-custom .form-check-label span {
+    position: relative;
+    padding-left: 40px;
+    display: inline-block;
+}
+
+/* Unchecked state - custom box */
+.checkbox-custom .form-check-label span::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    height: 30px;
+    border: 2px solid #007bff;
+    border-radius: 4px;
+    background-color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Checked state - change box color */
+.checkbox-custom .form-check-input:checked ~ .form-check-label span::before {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* Inner checkmark */
+.checkbox-custom .form-check-input:checked ~ .form-check-label span::after {
+    content: "✔";
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+}
+
+
+/* ############ Custom checkbox end here ################## */
+
+/* ############ Custom Radio starts here ################## */
+/* Hide the default radio button but keep it accessible */
+.radio-custom .form-check-input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+
+.radio-custom .form-check-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    gap: 8px;
+    padding: 5px;
+}
+
+.radio-custom .form-check-label span {
+    position: relative;
+    padding-left: 32px;
+}
+
+.radio-custom .form-check-label span::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px;
+    height: 26px;
+    border: 2px solid #007bff;
+    border-radius: 50%;
+    background-color: white;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Checked State */
+.radio-custom .form-check-input:checked ~ .form-check-label span::before {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* Inner Dot */
+.radio-custom .form-check-input:checked ~ .form-check-label span::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+
+/* ############ Custom Radio ends here ################## */
+
+/* ##### Make Table scrollable ##### */
+.formio-table table {
+    width: 1290px;
+    min-width: 1290px;
+    overflow: scroll;
+}
+
+.button-row {
+    display: flex;
+    justify-content: space-between; 
+    gap: 10px; 
+}
+.radio-custom .form-check, .checkbox-custom  .form-check{padding-left: 0 !important;}

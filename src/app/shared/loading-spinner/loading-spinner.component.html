@@ -1,0 +1,17 @@
+<div
+  *ngIf="isLoading"
+  [ngClass]="isRelative ? 'position-relative' : null"
+  [ngStyle]="isRelative ? { 'min-height': '200px' } : null"
+>
+  <div
+    class="loader-container"
+    [ngClass]="!isRelative ? 'w-100 h-100' : null"
+    [ngStyle]="
+      !isRelative
+        ? { background: 'hsla(223, 24%, 24%, 0.15)', position: 'fixed' }
+        : { position: 'absolute' }
+    "
+  >
+    <div class="k-loader-custom"></div>
+  </div>
+</div>

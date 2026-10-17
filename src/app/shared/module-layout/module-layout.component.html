@@ -1,0 +1,10 @@
+<app-rsi-topbar />
+<div class="position-relative" style="top: 54px">
+  <div class="d-flex flex-nowrap">
+    <app-rsi-sidebar />
+    <div class="col p-0" style="height: calc(100vh - 54px); overflow-x: hidden">
+      <app-offline-mode />
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

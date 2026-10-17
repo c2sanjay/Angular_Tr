@@ -1,0 +1,98 @@
+{
+  "$schema": "./node_modules/@angular/service-worker/config/schema.json",
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.csr.html",
+          "/index.html",
+          "/manifest.webmanifest",
+          "/*.css",
+          "/*.js",
+          "/*.woff",
+          "/*.woff2",
+          "/media/*.ttf",
+          "/media/*.woff2",
+          "/media/*.woff",
+          "/assets/fonts/*.woff2",
+          "/assets/fonts/*.woff",
+          "/assets/icons/*.png",
+          "/assets/screenshots/*.png",
+          "src/manifest.webmanifest"
+        ]
+      }
+    },
+    {
+      "name": "assets",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/**",
+          "/**/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2|ani)"
+        ]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "inspection-customers-api",
+      "urls": [
+        "https://trinityrails-api.mobileprogramming.net/api/InspectionHub/GetInspectionCustomersV2**"
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": 50,
+        "maxAge": "1h",
+        "timeout": "10s"
+      }
+    },
+    {
+      "name": "formio-api",
+      "urls": ["https://rhnnbdihewpekgz.form.io/**"],
+      "cacheConfig": {
+        "strategy": "performance",
+        "maxSize": 50,
+        "maxAge": "1h"
+      }
+    },
+    {
+      "name": "api-cache-trinity",
+      "urls": ["https://trinityrails-api.mobileprogramming.net/api**"],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": 100,
+        "maxAge": "1h"
+      }
+    },
+    {
+      "name": "api-cache-trinsight",
+      "urls": ["https://api.dev.trinsightlogisticsplatform.com/api/**"],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": 100,
+        "maxAge": "1h"
+      }
+    },
+    {
+      "name": "ape-cache",
+      "urls": [
+        "https://trinityrails-api.mobileprogramming.net/api/**",
+        "https://trinityrails-api.mobileprogramming.net/api/v1/images/search",
+        "https://cdn2.trinityrails-api.mobileprogramming.net/images/**"
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": 10,
+        "maxAge": "2h"
+      }
+    }
+  ],
+  "navigationUrls": ["/**", "!/api/**", "!/cdn/**"],
+  "navigationRequestStrategy": "performance"
+}

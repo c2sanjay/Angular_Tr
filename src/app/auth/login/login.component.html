@@ -1,0 +1,44 @@
+<div class="login-wrapper">
+  <div class="container">
+    <div class="row">
+      <!-- Left Panel (Logo and Image) -->
+      <div class="col-lg-5 col-md-5 d-none d-md-flex left-panel">
+        <div class="text-center">
+          <img
+            src="assets/images/rsiLogisticsLogo.png"
+            loading="lazy"
+            class="logo mx-auto"
+            alt="RSI Logistics Logo"
+          />
+        </div>
+      </div>
+      <!-- Right Panel (Auth0 Login Button) -->
+      <div class="col-lg-7 col-md-7 col-sm-12 right-panel">
+        <div class="d-flex justify-content-center align-items-center w-100">
+          <img
+            src="assets/images/rsiLogisticsLogoBlue.png"
+            loading="lazy"
+            class="d-block d-md-none mb-4"
+            alt="RSI Logistics Logo"
+          />
+        </div>
+        <div class="d-grid mt-3">
+          <ng-container
+            ><button
+              kendoButton
+              themeColor="primary"
+              class="k-rounded-md h-40px"
+              (click)="login()"
+            >
+              LOGIN
+            </button></ng-container
+          >
+          <app-kendo-loading-dialog
+            [message]="'REDIRECTING'"
+            *ngIf="isLoading"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

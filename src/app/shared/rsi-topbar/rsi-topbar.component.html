@@ -1,0 +1,110 @@
+<div
+  class="trs-navbar bg-black d-flex position-fixed w-100"
+  style="gap: 36px; align-items: center; padding: 10px 24px; z-index: 999"
+>
+  <a href="https://services.dev.rsinext.com/">
+    <img
+      src="assets/images/TrinityRailHeader-smaller.png"
+      alt="Trinity Logo"
+      height="34"
+      width="221"
+    />
+  </a>
+  <div class="my-apps" style="flex: 1 1 0">
+    <button
+      type="button"
+      class="my-apps-button"
+      (click)="toggleAppsPopup()"
+      [ngStyle]="
+        showApps
+          ? { 'background-color': '#be4d00' }
+          : { 'background-color': undefined }
+      "
+      #appsAnchor
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="23"
+        height="22"
+        viewBox="0 0 23 22"
+        fill="none"
+        style="background-color: white"
+      >
+        <path
+          d="M4.06477 7.33341H7.73144V3.66675H4.06477V7.33341ZM9.56477 18.3334H13.2314V14.6667H9.56477V18.3334ZM4.06477 18.3334H7.73144V14.6667H4.06477V18.3334ZM4.06477 12.8334H7.73144V9.16675H4.06477V12.8334ZM9.56477 12.8334H13.2314V9.16675H9.56477V12.8334ZM15.0648 3.66675V7.33341H18.7314V3.66675H15.0648ZM9.56477 7.33341H13.2314V3.66675H9.56477V7.33341ZM15.0648 12.8334H18.7314V9.16675H15.0648V12.8334ZM15.0648 18.3334H18.7314V14.6667H15.0648V18.3334Z"
+          [attr.fill]="showApps ? '#be4d00' : '#151619'"
+        ></path>
+      </svg>
+      My Apps
+    </button>
+  </div>
+  <div>
+    <button
+      type="button"
+      class="profile-button"
+      (click)="toggleLogoutPopup()"
+      [ngStyle]="
+        showLogout
+          ? { 'background-color': '#be4d00' }
+          : { 'background-color': undefined }
+      "
+      #logoutAnchor
+    >
+      <svg
+        width="31"
+        height="30"
+        viewBox="0 0 31 30"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g id="person-outline">
+          <path
+            id="Vector"
+            d="M15.7086 7.50622C17.1361 7.50622 18.2929 8.66098 18.2929 10.086C18.2929 11.511 17.1361 12.6658 15.7086 12.6658C14.2811 12.6658 13.1244 11.511 13.1244 10.086C13.1244 8.66098 14.2811 7.50622 15.7086 7.50622ZM15.7086 18.5625C19.3635 18.5625 23.2153 20.356 23.2153 21.1423V22.4936H8.20197V21.1423C8.20197 20.356 12.0538 18.5625 15.7086 18.5625ZM15.7086 5.17212C12.989 5.17212 10.7862 7.37108 10.7862 10.086C10.7862 12.8009 12.989 14.9999 15.7086 14.9999C18.4283 14.9999 20.631 12.8009 20.631 10.086C20.631 7.37108 18.4283 5.17212 15.7086 5.17212ZM15.7086 16.2284C12.4229 16.2284 5.86383 17.8745 5.86383 21.1423V24.8277H25.5534V21.1423C25.5534 17.8745 18.9943 16.2284 15.7086 16.2284Z"
+            fill="white"
+          ></path>
+        </g>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<div class="app-list-container rsi-popup" [class.show]="showApps">
+  <div class="app-list">
+    <a
+      *ngFor="let service of rsiServices"
+      class="application"
+      [href]="service.link"
+      [title]="service.name"
+    >
+      <div class="application-icon">
+        <img height="64" width="64" [src]="service.icon" [alt]="service.name" />
+      </div>
+      <div class="text">{{ service.name }}</div>
+    </a>
+  </div>
+</div>
+
+<div class="profile-dropdown rsi-popup" [class.show]="showLogout">
+  <button
+    class="border-0 bg-transparent"
+    style="text-align: left"
+    (click)="logout()"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="25"
+      height="25"
+      viewBox="0 0 25 25"
+      fill="none"
+    >
+      <path
+        d="M5.80615 21.8684C5.25615 21.8684 4.78549 21.6727 4.39415 21.2814C4.00282 20.8901 3.80682 20.4191 3.80615 19.8684V5.86841C3.80615 5.31841 4.00215 4.84774 4.39415 4.45641C4.78615 4.06507 5.25682 3.86907 5.80615 3.86841H12.8062V5.86841H5.80615V19.8684H12.8062V21.8684H5.80615ZM16.8062 17.8684L15.4312 16.4184L17.9812 13.8684H9.80615V11.8684H17.9812L15.4312 9.31841L16.8062 7.86841L21.8062 12.8684L16.8062 17.8684Z"
+        fill="#141518"
+      ></path>
+    </svg>
+    Log Out
+  </button>
+</div>
+
+<app-kendo-loading-dialog [message]="'LOGGING OUT'" *ngIf="showLogoutDialog" />

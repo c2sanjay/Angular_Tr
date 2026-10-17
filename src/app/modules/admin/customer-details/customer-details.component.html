@@ -1,0 +1,216 @@
+<app-module-layout>
+  <app-sync-mode [isSyncInProgress]="isSyncInProgress" />
+  <div style="width: calc(100vw - 60px); position: relative; left: 60px">
+    <div
+      class="d-flex flex-wrap justify-content-between align-items-center px-4 header-bg text-black main-heading"
+      style="margin-top: -3px"
+    >
+      <div class="d-flex align-items-center gap-3">
+        <kendo-textbox
+          [readonly]="true"
+          [value]="
+            selectedCustomer?.name ? selectedCustomer.name : 'Loading...'
+          "
+          class="k-custom-width k-rounded-md k-input-outline k-input-lg"
+        ></kendo-textbox>
+      </div>
+      <button
+        kendoButton
+        type="button"
+        themeColor="primary"
+        fillMode="clear"
+        (click)="goBack()"
+        class="h-40px"
+      >
+        <app-fa-arrow-left-icon />BACK
+      </button>
+    </div>
+    <div class="container-fluid p-4">
+      <div
+        class="d-flex justify-content-between align-items-center k-rounded-lg k-custom-rounded-top"
+      >
+        <p
+          class="m-0 fw-medium"
+          style="font-size: 20px; max-width: max-content"
+        >
+          Customer Details
+        </p>
+      </div>
+      <div
+        class="border p-3 rounded-0"
+        *ngIf="!isDetailsLoading; else showCustomerLoading"
+      >
+        <div class="d-flex align-items-center">
+          <div class="vendor-img me-3">
+            <svg
+              width="79"
+              height="79"
+              viewBox="0 0 79 79"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M11.3816 75.6532H67.6193C72.0563 75.6532 75.6532 72.0563 75.6532 67.6193V11.3816C75.6532 6.94458 72.0563 3.34766 67.6193 3.34766H11.3816C6.94458 3.34766 3.34766 6.94458 3.34766 11.3816V67.6193C3.34766 72.0563 6.94458 75.6532 11.3816 75.6532ZM11.3816 75.6532L55.5683 31.4665L75.6532 51.5514M31.4665 25.441C31.4665 28.7688 28.7688 31.4665 25.441 31.4665C22.1132 31.4665 19.4156 28.7688 19.4156 25.441C19.4156 22.1132 22.1132 19.4156 25.441 19.4156C28.7688 19.4156 31.4665 22.1132 31.4665 25.441Z"
+                stroke="#3A437A"
+                stroke-width="5.07407"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <div class="mt-2">
+            <div class="top-heading">
+              {{ selectedCustomer?.name }}
+            </div>
+            <p class="f14">
+              Active since {{ formatDate(selectedCustomer?.createdOn) }}
+            </p>
+            <label class="switch">
+              <input
+                type="checkbox"
+                class="success"
+                [checked]="selectedCustomer.active"
+                (change)="toggleStatus($event)"
+              />
+              <span class="slider round"></span>
+            </label>
+            <span class="ms-2 d-inline-block align-top">
+              {{ selectedCustomer.active ? 'Active' : 'Inactive' }}
+            </span>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-lg-3 col-md-5 col-sm-5 col-5 fw-bold">
+                Service Type
+              </div>
+              <div class="col-lg-1 col-md-1 col-sm-1 col-1">:</div>
+              <div class="col-lg-8 col-md-6 col-sm-6 col-6">
+                {{ selectedCustomer?.ServiceType || 'N/A' }}
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-lg-3 col-md-5 col-sm-5 col-5 fw-bold">
+                Contact Person
+              </div>
+              <div class="col-lg-1 col-md-1 col-sm-1 col-1">:</div>
+              <div class="col-lg-8 col-md-6 col-sm-6 col-6">
+                {{ selectedCustomer?.primaryContactName || 'N/A' }}
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-lg-3 col-md-5 col-sm-5 col-5 fw-bold">
+                User ID
+              </div>
+              <div class="col-lg-1 col-md-1 col-sm-1 col-1">:</div>
+              <div class="col-lg-8 col-md-6 col-sm-6 col-6">
+                {{ selectedCustomer?.primaryContactEmail || 'N/A' }}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-lg-3 col-md-5 col-sm-5 col-5 fw-bold">Phone</div>
+              <div class="col-lg-1 col-md-1 col-sm-1 col-1">:</div>
+              <div class="col-lg-8 col-md-6 col-sm-6 col-6">
+                {{ selectedCustomer?.phoneNumber || 'N/A' }}
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-lg-3 col-md-5 col-sm-5 col-5 fw-bold">
+                Locations
+              </div>
+              <div class="col-lg-1 col-md-1 col-sm-1 col-1">:</div>
+              <div class="col-lg-8 col-md-6 col-sm-6 col-6">
+                <div>{{ selectedCustomer?.address || 'N/A' }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #showCustomerLoading>
+        <div class="border">
+          <app-loading-spinner [isLoading]="true" [isRelative]="true" />
+        </div>
+      </ng-template>
+      <div
+        class="mt-4 d-flex justify-content-between align-items-center k-rounded-lg k-custom-rounded-top"
+      >
+        <p
+          class="m-0 fw-medium"
+          style="font-size: 20px; max-width: max-content"
+        >
+          Forms Assigned
+        </p>
+        <button
+          kendoButton
+          themeColor="primary"
+          class="k-rounded-md px-4 h-40px"
+          (click)="assignForm()"
+        >
+          ASSIGN FORM
+        </button>
+      </div>
+      <div class="border" *ngIf="isFormsLoading">
+        <app-loading-spinner [isLoading]="isFormsLoading" [isRelative]="true" />
+      </div>
+      <div *ngIf="!isFormsLoading">
+        <kendo-grid
+          scrollable="scrollable"
+          style="max-height: 100%"
+          [data]="gridView"
+          [pageSize]="pageSize"
+          [skip]="gridState.skip"
+          [pageable]="true"
+          [sortable]="true"
+          [sort]="gridState.sort"
+          filterable="menu"
+          [filter]="gridState.filter"
+          (dataStateChange)="onDataStateChange($event)"
+        >
+          <kendo-grid-column field="Title" title="Form Name" [width]="290">
+          </kendo-grid-column>
+          <kendo-grid-column field="YardName" title="Yard Name" [width]="210">
+          </kendo-grid-column>
+          <kendo-grid-column
+            field="action"
+            title="Action"
+            [headerStyle]="{ 'justify-content': 'center' }"
+            [width]="150"
+            [filterable]="false"
+            [sortable]="false"
+            ><ng-template kendoGridCellTemplate let-form>
+              <div class="d-flex gap-4 justify-content-center">
+                <a
+                  class="cursor-pointer anchor"
+                  (click)="InspectionFormDetailGetById(form)"
+                  style="color: #346cab"
+                >
+                  START INSPECTION
+                </a>
+                <a
+                  class="cursor-pointer anchor"
+                  (click)="unassignInspection(form)"
+                  style="color: #fd0d0d"
+                >
+                  UNASSIGN FORM
+                </a>
+              </div>
+            </ng-template></kendo-grid-column
+          >
+        </kendo-grid>
+      </div>
+    </div>
+  </div>
+</app-module-layout>
+
+<kendo-confirm-dialog
+  *ngIf="dialogVisible"
+  [title]="'Are you sure?'"
+  [type]="'danger'"
+  [message]="
+    'This is an irreversible action. Would you like to move forward with unassigning the form?'
+  "
+  (closeDialog)="handleDialogClose($event)"
+/>

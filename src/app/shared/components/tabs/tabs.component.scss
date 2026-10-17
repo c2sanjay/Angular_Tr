@@ -1,0 +1,39 @@
+@import '../../../../variables';
+
+.tabs {
+  display: flex;
+  border: 2px solid $Lochmara;
+  border-radius: 10px;
+  font-size: 14px !important;
+}
+
+.tabs button {
+  padding: 0.25rem 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: $Lochmara !important;
+  font-weight: 600;
+}
+
+.tabs button.active {
+  background-color: $Lochmara !important;
+  color: #fff !important;
+}
+.tabs button.active:first-child {
+  border-top-left-radius: 7px;
+  border-bottom-left-radius: 7px;
+}
+.tabs button.active:last-child {
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+}
+
+.tabs button:not(:last-child) {
+  border-right: 2px solid $Lochmara;
+}
+
+.tab-content {
+  padding: 10px;
+  border: 1px solid #ddd;
+}

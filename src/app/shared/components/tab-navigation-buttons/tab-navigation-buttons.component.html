@@ -1,0 +1,4 @@
+<div class="d-flex justify-content-center mb-4" *ngIf="tabNavigationService.isTabNavigationVisible">
+    <button [disabled]="tabNavigationService.currentTabIndex === 0" class="primary-purple-btn mx-2" (click)="onPreviousTab()">Previous</button>
+    <button  [disabled]="tabNavigationService.currentTabIndex === (tabNavigationService.totalTabs - 1)" class="primary-purple-btn mx-2" (click)="onNextTab()">Next</button>
+  </div>

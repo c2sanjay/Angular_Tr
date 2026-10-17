@@ -1,0 +1,41 @@
+<kendo-dialog
+  title="Export"
+  (close)="onCancel()"
+  [minWidth]="280"
+  [width]="510"
+  [height]="250"
+>
+  <p class="fw-medium">Please select the file format you wish to export.</p>
+  <kendo-dropdownlist
+    [data]="options"
+    [textField]="'text'"
+    [valueField]="'value'"
+    placeholder="Select type"
+    (valueChange)="onDropdownChange($event)"
+    class="w-100 k-rounded-md k-input-outline k-picker-lg"
+    style="background-color: white !important"
+  >
+  </kendo-dropdownlist>
+  <kendo-dialog-actions [layout]="'end'" class="d-flex gap-3 p-3">
+    <button
+      kendoButton
+      (click)="onCancel()"
+      themeColor="primary"
+      fillMode="clear"
+      class="px-3"
+      style="height: 34px"
+    >
+      CANCEL
+    </button>
+    <button
+      kendoButton
+      (click)="onConfirm()"
+      themeColor="primary"
+      [disabled]="!selectedOption"
+      class="px-5"
+      style="height: 34px"
+    >
+      EXPORT
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>

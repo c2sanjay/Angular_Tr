@@ -1,0 +1,151 @@
+<app-module-layout>
+  <app-sync-mode [isSyncInProgress]="isSyncInProgress" />
+  <div style="width: calc(100vw - 60px); position: relative; left: 60px">
+    <div class="container-fluid p-4">
+      <div class="d-flex flex-wrap align-items-end mb-4 gap-3">
+        <kendo-label
+          text="START DATE"
+          style="font-size: 11px"
+          class="fw-semibold"
+        >
+          <kendo-datepicker
+            class="k-rounded-md k-input-outline h-40px"
+            style="background-color: white !important"
+            placeholder="MM/DD/YYYY"
+            [max]="endDateKendo"
+            [value]="startDateKendo"
+            (valueChange)="onDateChange($event, 'startDate')"
+            format="MM/dd/yyyy"
+          ></kendo-datepicker>
+        </kendo-label>
+        <kendo-label
+          text="END DATE"
+          style="font-size: 11px"
+          class="fw-semibold"
+        >
+          <kendo-datepicker
+            class="k-rounded-md k-input-outline h-40px"
+            style="background-color: white !important"
+            [min]="startDateKendo"
+            [value]="endDateKendo"
+            placeholder="MM/DD/YYYY"
+            (valueChange)="onDateChange($event, 'endDate')"
+            format="MM/dd/yyyy"
+          ></kendo-datepicker>
+        </kendo-label>
+        <kendo-buttongroup selection="single">
+          <button
+            kendoButton
+            [toggleable]="true"
+            (click)="onBtnGroupClick('today')"
+            [selected]="dateRangeSelected === 'today'"
+            class="px-3 k-rounded-md k-border-primary"
+          >
+            TODAY
+          </button>
+          <button
+            kendoButton
+            [toggleable]="true"
+            (click)="onBtnGroupClick('last7days')"
+            [selected]="dateRangeSelected === 'last7days'"
+            class="px-3 k-rounded-md k-border-primary"
+          >
+            7 DAYS
+          </button>
+          <button
+            kendoButton
+            [toggleable]="true"
+            (click)="onBtnGroupClick('last30days')"
+            [selected]="dateRangeSelected === 'last30days'"
+            class="px-3 k-rounded-md k-border-primary"
+          >
+            1 MONTH
+          </button>
+        </kendo-buttongroup>
+      </div>
+      <div class="custom-box-shadow">
+        <div
+          class="d-flex justify-content-between align-items-center k-rounded-lg k-custom-rounded-top"
+        >
+          <p
+            class="m-0 fw-medium"
+            style="font-size: 20px; max-width: max-content"
+          >
+            Customer List
+          </p>
+        </div>
+        <div class="border" *ngIf="isLoading">
+          <app-loading-spinner [isLoading]="isLoading" [isRelative]="true" />
+        </div>
+        <div
+          *ngIf="!isLoading"
+          style="height: calc(100vh - 234px) !important; overflow: hidden"
+        >
+          <kendo-grid
+            scrollable="scrollable"
+            style="max-height: 100%"
+            [data]="gridView"
+            [pageSize]="pageSize"
+            [skip]="gridState.skip"
+            [pageable]="true"
+            [sortable]="true"
+            [sort]="gridState.sort"
+            filterable="menu"
+            [filter]="gridState.filter"
+            (dataStateChange)="onDataStateChange($event)"
+          >
+            <kendo-grid-column field="name" title="Customer Name" [width]="280">
+            </kendo-grid-column>
+            <kendo-grid-column
+              field="primaryContactName"
+              title="Contact Person"
+              [width]="230"
+            >
+              <ng-template kendoGridCellTemplate let-customer>
+                {{ customer.primaryContactName ?? 'N/A' }}</ng-template
+              > </kendo-grid-column
+            ><kendo-grid-column
+              field="createdOn"
+              title="Date Added"
+              [width]="180"
+              [filterable]="false"
+            >
+              <ng-template kendoGridCellTemplate let-customer>{{
+                customer.createdOn | date: 'MM/dd/yyyy'
+              }}</ng-template></kendo-grid-column
+            ><kendo-grid-column
+              field="status"
+              title="Status"
+              [width]="150"
+              [filterable]="false"
+            >
+              <ng-template kendoGridCellTemplate let-customer>
+                <span
+                  [ngClass]="customer.active ? 'sm-dot' : 'sm-dotRed'"
+                  class="mt-1"
+                ></span>
+                &nbsp;{{ customer.active ? 'Active' : 'Inactive' }}
+              </ng-template></kendo-grid-column
+            ><kendo-grid-column
+              field="action"
+              title="Action"
+              [width]="150"
+              [filterable]="false"
+              [sortable]="false"
+            >
+              <ng-template kendoGridCellTemplate let-customer>
+                <button
+                  class="cursor-pointer border-0 p-0 bg-transparent"
+                  (click)="viewCustomerDetails(customer.id)"
+                  style="color: #346cab"
+                >
+                  VIEW DETAIL
+                </button></ng-template
+              ></kendo-grid-column
+            >
+          </kendo-grid>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-module-layout>

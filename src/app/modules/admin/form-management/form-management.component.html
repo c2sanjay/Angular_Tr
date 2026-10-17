@@ -1,0 +1,108 @@
+<app-module-layout>
+  <app-sync-mode [isSyncInProgress]="isSyncInProgress" />
+  <div style="width: calc(100vw - 60px); position: relative; left: 60px">
+    <div
+      class="d-flex flex-wrap align-items-center gap-3 header-bg text-black main-heading px-4"
+      style="margin-top: -3px"
+    >
+      <div class="d-flex align-items-center h-40px">
+        <button
+          kendoButton
+          type="button"
+          fillMode="clear"
+          themeColor="primary"
+          class="px-0 font-15px"
+          (click)="showExportDialog()"
+        >
+          EXPORT<app-fa-download-icon />
+        </button>
+      </div>
+    </div>
+    <div class="container-fluid p-4">
+      <div
+        class="d-flex justify-content-between align-items-center k-rounded-lg k-custom-rounded-top"
+      >
+        <p
+          class="m-0 fw-medium"
+          style="font-size: 20px; max-width: max-content"
+        >
+          Form Management
+        </p>
+        <button
+          kendoButton
+          themeColor="primary"
+          class="k-rounded-md px-4 h-40px"
+          (click)="createForm()"
+        >
+          CREATE FORM
+        </button>
+      </div>
+      <div class="border" *ngIf="isLoading">
+        <app-loading-spinner [isLoading]="isLoading" [isRelative]="true" />
+      </div>
+      <div
+        *ngIf="!isLoading"
+        style="height: calc(100vh - 214px) !important; overflow: hidden"
+      >
+        <kendo-grid
+          scrollable="scrollable"
+          style="max-height: 100%"
+          [data]="gridView"
+          [pageSize]="pageSize"
+          [skip]="gridState.skip"
+          [pageable]="true"
+          [sortable]="true"
+          [sort]="gridState.sort"
+          filterable="menu"
+          [filter]="gridState.filter"
+          (dataStateChange)="onDataStateChange($event)"
+          ><kendo-grid-column field="Title" title="Form Name" [width]="320">
+          </kendo-grid-column>
+          <kendo-grid-column field="Group" title="Group" [width]="150">
+            <ng-template kendoGridCellTemplate let-form>{{
+              form.Group ? form.Group : 'DemoProject_1'
+            }}</ng-template>
+          </kendo-grid-column>
+          <kendo-grid-column
+            field="Created"
+            title="Created On"
+            [width]="230"
+            [filterable]="false"
+          >
+            <ng-template kendoGridCellTemplate let-form>{{
+              form.Created ? (form.Created | ipTimezone) : 'N/A'
+            }}</ng-template></kendo-grid-column
+          >
+          <kendo-grid-column
+            field="NoOfCustomer"
+            title="No. of Customers Assigned"
+            [width]="250"
+          >
+          </kendo-grid-column>
+          <kendo-grid-column
+            field="action"
+            title="Action"
+            [width]="150"
+            [filterable]="false"
+            [sortable]="false"
+          >
+            <ng-template kendoGridCellTemplate let-form>
+              <a
+                class="cursor-pointer anchor"
+                (click)="GetCustomerListByFormPath(form)"
+                style="color: #346cab"
+              >
+                VIEW DETAIL
+              </a></ng-template
+            ></kendo-grid-column
+          >
+        </kendo-grid>
+      </div>
+    </div>
+  </div>
+</app-module-layout>
+
+<app-kendo-export-dialog
+  *ngIf="exportDialogVisible"
+  (closeDialog)="onExportDialogClose($event)"
+/>

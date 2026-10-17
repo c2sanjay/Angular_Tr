@@ -1,0 +1,9 @@
+{
+    "/api": {
+      "target": "https://api.dev.trinsightlogisticsplatform.com",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }
+  

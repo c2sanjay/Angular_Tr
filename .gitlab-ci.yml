@@ -1,0 +1,8 @@
+build-devmp-code:
+  stage: deploy
+  script:
+    - echo deploy
+  tags:
+    - dev
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "dev"'
